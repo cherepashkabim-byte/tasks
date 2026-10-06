@@ -1,0 +1,195 @@
+/* Оболочка: фон, экран, нижняя панель, плашка, тост. */
+
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--bg);
+  pointer-events: none;
+}
+.bg__blob {
+  position: absolute;
+  width: 90vmax;
+  height: 90vmax;
+  border-radius: 50%;
+  filter: blur(40px);
+}
+.bg__blob--violet {
+  top: -45vmax;
+  left: -35vmax;
+  background: radial-gradient(circle, color-mix(in srgb, var(--blob-violet) 70%, transparent) 0%, transparent 65%);
+}
+.bg__blob--teal {
+  bottom: -50vmax;
+  right: -40vmax;
+  background: radial-gradient(circle, color-mix(in srgb, var(--blob-teal) 70%, transparent) 0%, transparent 65%);
+}
+
+.app {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app__content {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: calc(var(--safe-top) + 12px) calc(var(--safe-right) + var(--pad))
+    calc(var(--tabbar-h) + var(--safe-bottom) + 72px) calc(var(--safe-left) + var(--pad));
+}
+
+.screen {
+  animation: fade-up var(--dur) var(--ease) both;
+}
+.screen__header {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+  min-height: 48px;
+  margin-bottom: var(--pad);
+}
+.screen__titles {
+  flex: 1;
+  min-width: 0;
+}
+.screen__title {
+  margin: 0;
+  font-size: var(--fs-title);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.screen__subtitle {
+  color: var(--text-2);
+  font-size: var(--fs-small);
+  margin-top: 2px;
+}
+.screen__actions {
+  display: flex;
+  gap: 8px;
+}
+.screen__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.empty {
+  padding: 40px 24px;
+  text-align: center;
+  animation: fade-up var(--dur) var(--ease) both;
+}
+.empty__emoji {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+.empty__text {
+  color: var(--text-2);
+  line-height: 1.4;
+}
+
+.app__bottom {
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 calc(var(--safe-right) + 12px) calc(var(--safe-bottom) + 10px) calc(var(--safe-left) + 12px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.app__bottom > * {
+  pointer-events: auto;
+}
+
+.tabbar {
+  height: var(--tabbar-h);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding: 6px;
+  border-radius: 22px;
+  background: rgba(20, 20, 32, 0.55);
+}
+.tabbar__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  border-radius: 16px;
+  color: var(--text-2);
+  min-width: 0;
+  font-size: 11px;
+  font-weight: 500;
+  transition:
+    color var(--dur) var(--ease),
+    background var(--dur) var(--ease);
+}
+.tabbar__item span {
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.tabbar__item svg {
+  width: 22px;
+  height: 22px;
+}
+.tabbar__item.is-active {
+  color: var(--text);
+  background: var(--glass-bg-strong);
+}
+.tabbar__item.is-active svg {
+  color: var(--accent-1);
+}
+
+.outside-banner {
+  align-self: center;
+  max-width: 100%;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  color: var(--text-2);
+  background: rgba(11, 11, 18, 0.7);
+  border: 1px solid var(--glass-border);
+  text-align: center;
+}
+
+.toast {
+  position: fixed;
+  z-index: 50;
+  left: calc(var(--safe-left) + 16px);
+  right: calc(var(--safe-right) + 16px);
+  /* над кнопкой «+» (56px) */
+  bottom: calc(var(--tabbar-h) + var(--safe-bottom) + 92px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(30, 30, 46, 0.85);
+  animation: fade-up var(--dur) var(--ease) both;
+}
+.toast--danger {
+  border-color: color-mix(in srgb, var(--danger) 50%, transparent);
+}
+.toast__text {
+  flex: 1;
+  font-size: 14px;
+}
+.toast__action {
+  font-weight: 600;
+  color: var(--accent-2);
+}
+body:has(.outside-banner) .toast {
+  bottom: calc(var(--tabbar-h) + var(--safe-bottom) + 130px);
+}

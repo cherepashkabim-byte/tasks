@@ -1,0 +1,56 @@
+/* Токены дизайна (из спецификации). Компоненты берут цвета и размеры только отсюда. */
+:root {
+  --bg: #0b0b12;
+  --blob-violet: #2a1b5c;
+  --blob-teal: #0e2a3f;
+
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-bg-strong: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: blur(16px) saturate(140%);
+
+  --text: #f2f2f7;
+  --text-2: #9a9ab0;
+  --text-3: rgba(154, 154, 176, 0.6);
+
+  --accent-1: #7c5cff;
+  --accent-2: #4fa3ff;
+  --accent: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  --danger: #ff5c7a;
+  --success: #3ddc97;
+
+  /* палитра проектов и тем (та же, что PALETTE в src/store/palette.ts) */
+  --c-violet: #7c5cff;
+  --c-blue: #4fa3ff;
+  --c-teal: #2ed3c6;
+  --c-green: #3ddc97;
+  --c-yellow: #ffc145;
+  --c-orange: #ff8a4c;
+  --c-red: #ff5c7a;
+  --c-magenta: #e06cff;
+
+  --radius: 18px;
+  --radius-sm: 12px;
+  --radius-pill: 999px;
+  --gap: 12px;
+  --pad: 16px;
+
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --fs-title: 28px;
+  --fs-body: 16px;
+  --fs-small: 13px;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur: 280ms;
+
+  /* безопасные зоны: системные + Telegram (Bot API 8.0 выставляет --tg-*safe-area-inset-*) */
+  --safe-top: calc(
+    max(env(safe-area-inset-top, 0px), var(--tg-safe-area-inset-top, 0px)) +
+      var(--tg-content-safe-area-inset-top, 0px)
+  );
+  --safe-bottom: max(env(safe-area-inset-bottom, 0px), var(--tg-safe-area-inset-bottom, 0px));
+  --safe-left: max(env(safe-area-inset-left, 0px), var(--tg-safe-area-inset-left, 0px));
+  --safe-right: max(env(safe-area-inset-right, 0px), var(--tg-safe-area-inset-right, 0px));
+
+  --tabbar-h: 64px;
+}

@@ -1,0 +1,468 @@
+/* Проекты и темы: карточки, прогресс, фильтр, формы в шторке, подтверждения. */
+
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+.icon-btn--accent {
+  color: #fff;
+  background: var(--accent);
+  border-color: transparent;
+  box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--accent-1) 90%, transparent);
+}
+
+/* ——— Списки карточек ——— */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pcard,
+.tcard {
+  --sw: var(--accent-1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 72px;
+  padding: 14px 12px 14px 14px;
+  text-align: left;
+  overflow: hidden;
+  animation: fade-up var(--dur) var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 40ms);
+  transition:
+    transform 160ms var(--ease),
+    background var(--dur) var(--ease),
+    border-color var(--dur) var(--ease);
+}
+/* Мягкое цветное свечение слева — цвет проекта/темы. */
+.pcard::before,
+.tcard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 140% at 0% 50%, color-mix(in srgb, var(--sw) 16%, transparent), transparent 55%);
+  pointer-events: none;
+}
+.pcard:active,
+.tcard:active {
+  transform: scale(0.98);
+  background: var(--glass-bg-strong);
+}
+.pcard > *,
+.tcard > * {
+  position: relative;
+}
+
+.pcard__badge {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  line-height: 1;
+  background: color-mix(in srgb, var(--sw) 20%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sw) 35%, transparent);
+}
+.pcard__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.pcard__top {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.pcard__name {
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+  font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.pcard__count {
+  flex: none;
+  font-size: var(--fs-small);
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
+}
+.pcard.is-complete .pcard__count {
+  color: var(--success);
+}
+.pcard__pct {
+  flex: none;
+  min-width: 38px;
+  text-align: right;
+  font-size: var(--fs-small);
+  font-weight: 700;
+  color: color-mix(in srgb, var(--sw) 70%, #fff);
+  font-variant-numeric: tabular-nums;
+}
+.pcard.is-complete .pcard__pct {
+  color: var(--success);
+}
+
+/* Полоска прогресса проекта (карточка и экран проекта). */
+.pbar {
+  --sw: var(--accent-1);
+  display: block;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+.pbar--lg {
+  height: 12px;
+}
+.pbar__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  transform-origin: left center;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--sw) 75%, #000), var(--sw) 55%, color-mix(in srgb, var(--sw) 60%, #fff));
+  box-shadow: 0 0 12px color-mix(in srgb, var(--sw) 60%, transparent);
+  transition: transform 700ms var(--ease);
+}
+
+/* Крупная шкала «NN%» на экране проекта. */
+.pprog {
+  --sw: var(--accent-1);
+  padding: 16px 16px 18px;
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: fade-up 280ms var(--ease) both;
+}
+.pprog__top {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+}
+.pprog__pct {
+  flex: none;
+  font-size: 46px;
+  line-height: 0.9;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(135deg, #fff, color-mix(in srgb, var(--sw) 70%, #fff));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.pprog__sign {
+  font-size: 24px;
+  font-weight: 700;
+  margin-left: 2px;
+}
+.pprog__phrase {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 3px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--text-2);
+  animation: fade-up 360ms var(--ease) both;
+}
+.pprog.is-complete .pprog__phrase {
+  color: var(--success);
+}
+.pprog.is-party .pprog__pct {
+  animation: pop-big 600ms var(--ease);
+}
+@keyframes pop-big {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.18);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.confetti {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.pcard__chev {
+  flex: none;
+  color: var(--text-3);
+  display: grid;
+  place-items: center;
+}
+.pcard__chev svg {
+  width: 18px;
+  height: 18px;
+  transform: rotate(-90deg);
+}
+
+.tcard {
+  min-height: 60px;
+}
+.tcard__dot {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin: 0 4px 0 6px;
+  border-radius: 50%;
+  background: var(--sw);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--sw) 18%, transparent),
+    0 0 14px color-mix(in srgb, var(--sw) 70%, transparent);
+}
+.tcard__name {
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tcard__count {
+  flex: none;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sw);
+  background: color-mix(in srgb, var(--sw) 16%, transparent);
+}
+.tcard__count.is-zero {
+  color: var(--text-3);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ——— Экран проекта/темы ——— */
+.filter-chips {
+  margin: 0 calc(-1 * var(--pad));
+  padding: 2px var(--pad);
+  animation: fade-up var(--dur) var(--ease) both;
+}
+.theme-hero {
+  height: 3px;
+  margin: -6px 2px 4px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--sw), transparent);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--sw) 60%, transparent);
+}
+.clear-btn {
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 22%, transparent);
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease), transform 120ms var(--ease);
+}
+.clear-btn:active {
+  transform: scale(0.96);
+}
+.clear-btn.is-armed {
+  color: #fff;
+  background: var(--danger);
+  animation: armed 300ms var(--ease);
+}
+
+/* ——— Предупреждение о пределе хранилища ——— */
+.warn {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  border-color: color-mix(in srgb, var(--c-yellow) 30%, transparent);
+  background: color-mix(in srgb, var(--c-yellow) 8%, var(--glass-bg));
+  animation: fade-up var(--dur) var(--ease) both;
+}
+.warn__icon {
+  flex: none;
+  color: var(--c-yellow);
+}
+.warn__icon svg {
+  width: 22px;
+  height: 22px;
+}
+.warn__body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.warn__title {
+  font-weight: 600;
+}
+.warn__text {
+  color: var(--text-2);
+  font-size: var(--fs-small);
+  line-height: 1.4;
+}
+.warn__btn {
+  align-self: flex-start;
+  margin-top: 8px;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-yellow);
+  background: color-mix(in srgb, var(--c-yellow) 14%, transparent);
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.warn__btn.is-armed {
+  color: #1a1400;
+  background: var(--c-yellow);
+}
+
+/* ——— Формы проекта/темы ——— */
+.form-head {
+  --sw: var(--accent-1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.form-head:focus-within {
+  border-color: color-mix(in srgb, var(--sw) 55%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sw) 16%, transparent);
+}
+.form-head__badge {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  background: color-mix(in srgb, var(--sw) 22%, transparent);
+  transition: background var(--dur) var(--ease);
+  animation: pop 320ms var(--ease);
+}
+.form-head__dot {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 0 4px;
+  border-radius: 50%;
+  background: var(--sw);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--sw) 70%, transparent);
+  transition: background var(--dur) var(--ease);
+}
+.form-name {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 0;
+  border: 0;
+  outline: 0;
+  background: none;
+  font-size: 18px;
+  font-weight: 600;
+}
+.form-name::placeholder {
+  color: var(--text-3);
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+}
+.swatch {
+  aspect-ratio: 1;
+  max-width: 44px;
+  width: 100%;
+  justify-self: center;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  background: var(--sw);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.12);
+  transition: transform 160ms var(--ease), box-shadow var(--dur) var(--ease);
+}
+.swatch svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 3;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 160ms var(--ease), transform 220ms var(--ease);
+}
+.swatch:active {
+  transform: scale(0.9);
+}
+.swatch.is-on {
+  box-shadow:
+    0 0 0 3px var(--bg),
+    0 0 0 5px var(--sw),
+    0 0 18px color-mix(in srgb, var(--sw) 60%, transparent);
+}
+.swatch.is-on svg {
+  opacity: 1;
+  transform: none;
+}
+
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+}
+.emoji-opt {
+  --sw: var(--accent-1);
+  aspect-ratio: 1;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 21px;
+  line-height: 1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid transparent;
+  transition:
+    background var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    transform 160ms var(--ease);
+}
+.emoji-opt:active {
+  transform: scale(0.88);
+}
+.emoji-opt.is-on {
+  background: color-mix(in srgb, var(--sw) 22%, transparent);
+  border-color: color-mix(in srgb, var(--sw) 60%, transparent);
+  transform: scale(1.06);
+}
+
+/* Взведённое удаление в низу шторки формы: вопрос на всю ширину вместо «Сохранить». */
+.sheet-btn--danger.is-wide {
+  flex: 1;
+  white-space: normal;
+  text-align: left;
+  line-height: 1.3;
+  padding: 8px 16px;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.7);
+  }
+  to {
+    transform: none;
+  }
+}

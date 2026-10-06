@@ -1,0 +1,187 @@
+/* Вкладка «Привычки»: карточки, полоска 7 дней, большая галочка, дни недели в форме. */
+
+.habit {
+  --sw: var(--accent-1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 12px 12px 14px;
+  overflow: hidden;
+  animation: fade-up var(--dur) var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 40ms);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.habit::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 140% at 0% 50%, color-mix(in srgb, var(--sw) 16%, transparent), transparent 55%);
+  pointer-events: none;
+}
+.habit > * {
+  position: relative;
+}
+.habit.is-done {
+  border-color: color-mix(in srgb, var(--sw) 40%, transparent);
+}
+
+.habit__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+.habit__body:active {
+  opacity: 0.8;
+}
+.habit__badge {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  line-height: 1;
+  background: color-mix(in srgb, var(--sw) 20%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--sw) 35%, transparent);
+}
+.habit__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.habit__name {
+  font-size: 16px;
+  font-weight: 600;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.habit__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 12px;
+  color: var(--text-2);
+}
+.habit__streak {
+  flex: none;
+  font-weight: 650;
+  color: var(--text);
+}
+.habit__streak.is-zero {
+  opacity: 0.55;
+  font-weight: 500;
+  color: var(--text-2);
+}
+.habit__days {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Полоска 7 дней */
+.habit__strip {
+  display: flex;
+  gap: 5px;
+}
+.hday {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex: none;
+  transition: background 280ms var(--ease), box-shadow 280ms var(--ease);
+}
+.hday--done {
+  background: var(--sw);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--sw) 60%, transparent);
+}
+.hday--missed {
+  background: var(--danger);
+  opacity: 0.85;
+}
+.hday--off {
+  background: rgba(255, 255, 255, 0.12);
+}
+.hday--before {
+  background: rgba(255, 255, 255, 0.05);
+}
+.hday--pending {
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--sw) 70%, transparent);
+}
+.hday.is-today {
+  outline: 1.5px solid rgba(255, 255, 255, 0.55);
+  outline-offset: 2px;
+}
+
+/* Большая галочка: те же .check / .burst, что у задач, крупнее */
+.check--lg {
+  width: 52px;
+  height: 52px;
+  margin: 0;
+}
+.check--lg .check__ring {
+  width: 40px;
+  height: 40px;
+  border-width: 2.5px;
+}
+.check--lg .check__ring svg {
+  width: 22px;
+  height: 22px;
+}
+.check--lg.is-popping .check__ring {
+  animation: check-pop 420ms var(--ease);
+}
+.check--lg .burst::before {
+  left: -24px;
+  top: -24px;
+  width: 48px;
+  height: 48px;
+}
+
+.habits-done {
+  margin: 0 4px 10px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--success);
+  background: color-mix(in srgb, var(--success) 12%, transparent);
+  animation: fade-up var(--dur) var(--ease) both;
+}
+.habits-none {
+  margin: 0 4px;
+  font-size: 14px;
+  color: var(--text-2);
+}
+/* Дни недели в форме привычки */
+.day-chips {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+.day-chip {
+  height: 40px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-2);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.08));
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease), transform 160ms var(--ease);
+}
+.day-chip:active {
+  transform: scale(0.92);
+}
+.day-chip.is-on {
+  color: var(--text);
+  background: color-mix(in srgb, var(--sw) 28%, transparent);
+  border-color: color-mix(in srgb, var(--sw) 60%, transparent);
+}

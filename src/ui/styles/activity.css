@@ -1,0 +1,118 @@
+/* Карта действий на «Сроках» (ActivityMap.tsx). */
+.act-map {
+  padding: 14px 14px 10px;
+  margin-bottom: var(--gap);
+  animation: fade-up var(--dur) var(--ease) both;
+}
+
+.act-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.act-streak {
+  font-weight: 600;
+  font-size: 15px;
+}
+.act-streak--zero {
+  color: var(--text-2);
+  font-weight: 500;
+}
+.act-caption {
+  color: var(--text-3);
+  font-size: var(--fs-small);
+  white-space: nowrap;
+}
+
+.act-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px 4px;
+  justify-items: center;
+}
+.act-wd {
+  color: var(--text-3);
+  font-size: 11px;
+  line-height: 1;
+  padding-bottom: 2px;
+}
+
+.act-dot {
+  width: min(100%, 28px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  transition:
+    background-color 500ms var(--ease),
+    box-shadow 200ms var(--ease),
+    transform 200ms var(--ease);
+}
+.act-dot:active:not(:disabled) {
+  transform: scale(0.88);
+}
+.act-dot--green {
+  background-color: var(--success);
+}
+.act-dot--red {
+  background-color: var(--danger);
+  opacity: 0.85;
+}
+.act-dot--gray {
+  background-color: rgba(154, 154, 176, 0.22);
+}
+.act-dot--future {
+  background-color: transparent;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.16);
+  cursor: default;
+}
+.act-dot--today {
+  box-shadow:
+    0 0 0 2px var(--bg),
+    0 0 0 4px var(--text);
+}
+.act-dot--sel:not(.act-dot--today) {
+  box-shadow:
+    0 0 0 2px var(--bg),
+    0 0 0 3.5px var(--text-2);
+}
+.act-dot--pop {
+  animation: act-pop 700ms var(--ease) both;
+}
+@keyframes act-pop {
+  0% {
+    background-color: var(--danger);
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.3);
+  }
+  100% {
+    background-color: var(--success);
+    transform: scale(1);
+  }
+}
+
+.act-hint {
+  min-height: 22px;
+  margin-top: 8px;
+  text-align: center;
+  font-size: var(--fs-small);
+  color: var(--text-2);
+}
+.act-hint-text {
+  display: inline-block;
+  animation: fade-up 200ms var(--ease) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .act-dot,
+  .act-dot--pop,
+  .act-hint-text {
+    animation: none;
+    transition: none;
+  }
+}
